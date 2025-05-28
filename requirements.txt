@@ -1,0 +1,4 @@
+kivy
+pillow
+opencv-python
+requests

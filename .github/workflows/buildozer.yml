@@ -1,0 +1,43 @@
+name: Build APK
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y build-essential ccache git libncurses5 libffi-dev libssl-dev \
+              libsqlite3-dev libjpeg-dev zlib1g-dev libbz2-dev libreadline-dev libncursesw5 \
+              xz-utils liblzma-dev libgdbm-dev libnss3-dev libgdbm-compat-dev \
+              libexpat1-dev libmpdec-dev python3-pip python3-venv openjdk-17-jdk \
+              unzip zip autoconf libtool pkg-config
+
+      - name: Install Buildozer
+        run: |
+          python3 -m pip install --upgrade pip
+          pip3 install Cython virtualenv
+          pip3 install buildozer
+
+      - name: Build APK
+        run: |
+          buildozer android debug
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v3
+        with:
+          name: app-debug.apk
+          path: bin/*.apk
