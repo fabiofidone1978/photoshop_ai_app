@@ -2,7 +2,7 @@ from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
 from image_utils import apply_filter, resize_image
 from generate import generate_image_from_prompt
-# trigger
+# triggers
 
 class EditorLayout(BoxLayout):
     def on_select_image(self, path):
