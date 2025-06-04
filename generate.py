@@ -1,5 +1,6 @@
 import os
 import requests
+import os
 
 
 def generate_image_from_prompt(prompt):
@@ -13,7 +14,6 @@ def generate_image_from_prompt(prompt):
         "style": "anime"
     }
     r = requests.post(url, headers=headers, json=data)
-    r.raise_for_status()
     os.makedirs("assets", exist_ok=True)
     with open("assets/generated.jpg", "wb") as f:
         f.write(r.content)
