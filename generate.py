@@ -4,6 +4,7 @@ import os
 
 
 def generate_image_from_prompt(prompt):
+    os.makedirs("assets", exist_ok=True)
     url = "https://api.stability.ai/v2beta/stable-image/generate"
     api_key = os.environ.get("STABILITY_API_KEY")
     if not api_key:

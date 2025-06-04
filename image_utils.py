@@ -11,7 +11,7 @@ def ensure_assets_dir():
 
 
 def apply_filter(path, filter_type="BLUR"):
-    ensure_assets_dir()
+
     img = Image.open(path)
     if filter_type == "BLUR":
         img = img.filter(ImageFilter.BLUR)
@@ -24,7 +24,7 @@ def apply_filter(path, filter_type="BLUR"):
 
 
 def resize_image(path, size=(512, 512)):
-    ensure_assets_dir()
+
     img = Image.open(path)
     img = img.resize(size)
 
