@@ -1,7 +1,9 @@
+import os
 import requests
 
 
 def generate_image_from_prompt(prompt):
+    os.makedirs("assets", exist_ok=True)
     url = "https://api.stability.ai/v2beta/stable-image/generate"
     headers = {
         "Authorization": "sk-CBsbVK5KVZYWwygFzyXdKWKdy0w1k0J7IJrfb7BjjxUDcNmm"}
