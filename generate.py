@@ -1,20 +1,27 @@
-import os
-import requests
+from PIL import Image, ImageDraw, ImageFont
 import os
 
 
-def generate_image_from_prompt(prompt):
-    url = "https://api.stability.ai/v2beta/stable-image/generate"
-    api_key = os.environ.get("STABILITY_API_KEY")
-    if not api_key:
-        raise RuntimeError("STABILITY_API_KEY environment variable not set")
-    headers = {"Authorization": f"Bearer {api_key}"}
-    data = {
-        "prompt": prompt,
-        "style": "anime"
-    }
-    r = requests.post(url, headers=headers, json=data)
-    os.makedirs("assets", exist_ok=True)
-    with open("assets/generated.jpg", "wb") as f:
-        f.write(r.content)
-    return "assets/generated.jpg"
+def generate_image_from_prompt(prompt: str) -> str:
+    """
+    Genera un'immagine simulata (mock) da un prompt.
+    """
+    if not os.path.exists("assets"):
+        os.makedirs("assets")
+
+    img = Image.new("RGB", (512, 512), color="lightblue")
+    draw = ImageDraw.Draw(img)
+
+    # Font predefinito (non richiede installazione)
+    try:
+        font = ImageFont.truetype("arial.ttf", 20)
+    except:
+        font = ImageFont.load_default()
+
+    # Scrive il prompt centrato
+    draw.text((20, 230), f"AI Prompt:\n{prompt}", fill="black", font=font)
+
+    output_path = "assets/generated.jpg"
+    img.save(output_path, "JPEG")
+
+    return output_path

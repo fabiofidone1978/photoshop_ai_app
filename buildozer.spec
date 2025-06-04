@@ -2,9 +2,12 @@
 title = PhotoshopAI
 package.name = photoshop_ai
 package.domain = org.fabiofidone
-source.include_exts = py,png,jpg,kv
-requirements = python3,kivy,pillow,opencv-python,requests
+source.include_exts = py,png,jpg,kv,ttf
+requirements = python3,kivy,kivymd,kivymd_extensions.akivymd,pillow,opencv-python,requests
 android.permissions = INTERNET
+android.permissions = CAMERA
+android.hardware.camera = true
+android.hardware.camera.autofocus = true
 
 # (str) Title of your application
 
@@ -12,7 +15,7 @@ android.permissions = INTERNET
 source.dir = .
 
 # (list) Source files to include (let empty to include all the files)
-source.include_exts = py,png,jpg,kv,atlas
+source.include_exts = py,png,jpg,kv,ttf
 
 # (list) List of inclusions using pattern matching
 #source.include_patterns = assets/*,images/*.png

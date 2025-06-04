@@ -1,8 +1,11 @@
-kivy
+
+kivy==2.3.0
+kivymd==1.1.1
+kivymd_extensions.akivymd
+
 pillow
 opencv-python
 requests
 
-
-
-
+kivy-garden
+kivy-garden.xcamera

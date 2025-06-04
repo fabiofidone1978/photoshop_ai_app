@@ -1,0 +1,83 @@
+<RootWidget>:
+    orientation: 'vertical'
+    padding: 10
+    spacing: 10
+
+    BoxLayout:
+        size_hint_y: None
+        height: '48dp'
+        spacing: 10
+
+        Button:
+            text: "🖼️ Carica Immagine"
+            on_release: root.choose_image()
+
+        Button:
+            text: "📥 Carica Progetto"
+            on_release: root.load_project()
+
+        Button:
+            text: "💾 Salva Progetto"
+            on_release: root.save_project()
+
+    Image:
+        id: image_view
+        source: root.image_path
+        allow_stretch: True
+        keep_ratio: True
+
+    GridLayout:
+        cols: 2
+        size_hint_y: None
+        height: self.minimum_height
+        spacing: 10
+        row_default_height: '40dp'
+
+        Button:
+            text: "🌈 Style Transfer"
+            on_release: root.style_transfer_btn()
+
+        Button:
+            text: "🔍 Super Resolution"
+            on_release: root.super_res()
+
+        Button:
+            text: "🎯 Rimozione Oggetti"
+            on_release: root.object_removal()
+
+        Button:
+            text: "🧽 Riduzione Rumore"
+            on_release: root.noise_reduction()
+
+        Button:
+            text: "🌄 Dehaze"
+            on_release: root.dehaze_btn()
+
+        Button:
+            text: "🎛️ Curve RGB"
+            on_release: root.rgb_curves_btn()
+
+        Button:
+            text: "🎨 HSL Adjust"
+            on_release: root.hsl_adjust_btn()
+
+        Button:
+            text: "✂️ Crop Immagine"
+            on_release: root.crop_btn()
+
+        Button:
+            text: "🪄 Preset"
+            on_release: root.apply_preset()
+
+        Button:
+            text: "📄 Esporta PDF"
+            on_release: root.export_pdf()
+
+        Button:
+            text: "🗜️ Esporta ZIP"
+            on_release: root.export_zip()
+
+        Button:
+            text: "🖼️ Esporta PSD"
+            on_release: root.export_psd()
+

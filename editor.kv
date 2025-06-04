@@ -1,32 +1,60 @@
 <EditorLayout>:
-    orientation: 'vertical'
-    padding: dp(10)
-    spacing: dp(10)
+    orientation: 'horizontal'
 
-    Image:
-        id: preview
-        source: ''
-        size_hint_y: 0.6
-        allow_stretch: True
-        keep_ratio: True
+    MDNavigationDrawer:
+        id: nav_drawer
+        MDNavigationDrawerMenu:
+            MDNavigationDrawerHeader:
+                title: "Photoshop AI"
+                spacing: "4dp"
+                padding: "12dp", 0, 0, "56dp"
+                source: "assets/logo.png"
 
-    TextInput:
-        id: prompt_input
-        size_hint_y: None
-        height: dp(40)
-        multiline: False
-        hint_text: 'Enter prompt'
+            MDNavigationDrawerItem:
+                text: "Apri immagine"
+                on_release: root.load_image()
+
+            MDNavigationDrawerItem:
+                text: "Salva immagine"
+                on_release: root.save_image()
+
+            MDNavigationDrawerItem:
+                text: "Tema scuro/chiaro"
+                on_release: app.toggle_theme()
 
     BoxLayout:
-        size_hint_y: None
-        height: dp(40)
-        spacing: dp(10)
-        Button:
-            text: 'Load Image'
-            on_release: root.on_select_image(None)
-        Button:
-            text: 'Apply Filter'
-            on_release: root.on_apply_filter()
-        Button:
-            text: 'Generate AI'
-            on_release: root.on_generate_image(prompt_input.text)
+        orientation: 'vertical'
+
+        MDTopAppBar:
+            title: "Editor"
+            elevation: 4
+            left_action_items: [["menu", lambda x: nav_drawer.set_state("toggle")]]
+
+        Image:
+            id: preview
+            source: ''
+            allow_stretch: True
+
+        MDTextField:
+            id: prompt_input
+            hint_text: "Prompt AI"
+            size_hint_y: None
+            height: "48dp"
+            pos_hint: {"center_x": 0.5}
+
+        MDBoxLayout:
+            adaptive_height: True
+            spacing: "12dp"
+            padding: "12dp"
+            MDRaisedButton:
+                text: "Ritaglia"
+                on_release: root.crop_image()
+            MDRaisedButton:
+                text: "Filtro"
+                on_release: root.apply_filter()
+            MDRaisedButton:
+                text: "Preset"
+                on_release: root.apply_preset()
+            MDRaisedButton:
+                text: "Genera AI"
+                on_release: root.generate_ai()

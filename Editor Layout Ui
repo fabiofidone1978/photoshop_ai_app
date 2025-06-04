@@ -1,0 +1,93 @@
+from kivy.uix.boxlayout import BoxLayout
+from kivymd.uix.snackbar import Snackbar
+from kivymd.uix.dialog import MDDialog
+from kivymd.uix.spinner import MDSpinner
+from kivy.clock import Clock
+from image_utils import apply_filter
+from generate import generate_image_from_prompt
+from camera_view import take_photo
+import shutil
+import os
+from datetime import datetime
+
+
+class EditorLayout(BoxLayout):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.image_path = None
+        self.dialog = None
+
+    def on_select_image(self, path):
+        if path:
+            self.image_path = path
+            self.ids.preview.source = path
+            Snackbar(text="\U0001F4C2 Immagine caricata!").open()
+
+    def on_apply_filter(self):
+        if not self.image_path:
+            Snackbar(text="\u2757 Nessuna immagine selezionata.").open()
+            return
+        apply_filter(self.image_path)
+        self.ids.preview.source = "assets/output.jpg"
+        Snackbar(text="\U0001F3A8 Filtro applicato.").open()
+
+    def on_generate_image(self, prompt):
+        if not prompt:
+            Snackbar(text="\u270F\ufe0f Inserisci un prompt.").open()
+            return
+        self.show_loader("\u23F3 Generazione in corso...")
+        Clock.schedule_once(lambda dt: self._generate(prompt), 1.0)
+
+    def _generate(self, prompt):
+        result_path = generate_image_from_prompt(prompt)
+        self.ids.preview.source = result_path
+        self.hide_loader()
+        Snackbar(text="\u2705 Immagine AI generata.").open()
+
+    def show_loader(self, message):
+        self.dialog = MDDialog(
+            text=message,
+            type="custom",
+            content_cls=MDSpinner(size_hint=(None, None),
+                                  size=("48dp", "48dp")),
+        )
+        self.dialog.open()
+
+    def hide_loader(self):
+        if self.dialog:
+            self.dialog.dismiss()
+
+    def on_take_photo(self):
+        path = take_photo()
+        if path:
+            self.image_path = path
+            self.ids.preview.source = path
+            Snackbar(text="\U0001F4F8 Foto acquisita.").open()
+
+    def on_fab_click(self, instance_fab, fab_label: str):
+        if fab_label == "Gallery":
+            self.on_select_image("assets/example.jpg")
+        elif fab_label == "Capture":
+            self.on_take_photo()
+        elif fab_label == "AI":
+            self.on_generate_image(self.ids.prompt_input.text)
+
+    def export_project(self):
+        export_dir = "exports"
+        os.makedirs(export_dir, exist_ok=True)
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        project_dir = os.path.join(export_dir, f"project_{timestamp}")
+        os.makedirs(project_dir, exist_ok=True)
+
+        prompt_text = self.ids.prompt_input.text
+        preview_path = self.ids.preview.source
+
+        if os.path.exists(preview_path):
+            shutil.copy(preview_path, os.path.join(project_dir, "preview.jpg"))
+
+        with open(os.path.join(project_dir, "prompt.txt"), "w", encoding="utf-8") as f:
+            f.write(prompt_text)
+
+        shutil.make_archive(project_dir, 'zip', project_dir)
+        Snackbar(
+            text=f"\U0001F4E5 Progetto salvato in {project_dir}.zip").open()
