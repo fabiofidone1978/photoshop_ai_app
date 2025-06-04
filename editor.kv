@@ -1,0 +1,32 @@
+<EditorLayout>:
+    orientation: 'vertical'
+    padding: dp(10)
+    spacing: dp(10)
+
+    Image:
+        id: preview
+        source: ''
+        size_hint_y: 0.6
+        allow_stretch: True
+        keep_ratio: True
+
+    TextInput:
+        id: prompt_input
+        size_hint_y: None
+        height: dp(40)
+        multiline: False
+        hint_text: 'Enter prompt'
+
+    BoxLayout:
+        size_hint_y: None
+        height: dp(40)
+        spacing: dp(10)
+        Button:
+            text: 'Load Image'
+            on_release: root.on_select_image(None)
+        Button:
+            text: 'Apply Filter'
+            on_release: root.on_apply_filter()
+        Button:
+            text: 'Generate AI'
+            on_release: root.on_generate_image(prompt_input.text)
