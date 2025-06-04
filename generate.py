@@ -10,6 +10,8 @@ def generate_image_from_prompt(prompt):
         "style": "anime"
     }
     r = requests.post(url, headers=headers, json=data)
+    import os
+    os.makedirs("assets", exist_ok=True)
     with open("assets/generated.jpg", "wb") as f:
         f.write(r.content)
     return "assets/generated.jpg"
